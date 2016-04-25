@@ -17,14 +17,6 @@ public class Server authority (server) {
      out.println ("Starting user creation");
 
      // TODO: placeholder
-     User {Alice->;server->} alice = new User();
-     User {Bob->;server->} bob = new User();
-     User {Chuck->;server->} chuck = new User();
-     User {Dolores->;server->} dolores = new User();
-     try{
-	 users.add(alice);
-     }catch(NullPointerException e){}
-     out.println ("Finished user creation");
   }
 
 
