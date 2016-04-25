@@ -1,0 +1,18 @@
+package jif.principals;
+
+public class Bob extends ExternalPrincipal {
+    public Bob{this:;this!:}() where authority (this)  {
+	super("Bob");
+    final principal c = new server();
+    addDelegatesTo(c);
+
+    }
+
+    private static Bob{*!:*} P;
+    public static Principal getInstance{*!:*}() {
+	if (P == null) {
+	    P = new Bob();
+	}
+	return P;
+    }
+}

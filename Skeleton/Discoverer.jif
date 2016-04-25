@@ -1,0 +1,8 @@
+interface Discoverer [principal P] authority (P) {
+  DiscoveryResult [q]  { q -> }
+   discover {P <- ; q<-; server <- }
+            (Profile[{P ->; P <-}] {} x,
+             principal  {} q,
+             Profile[{q ->; q<-} ] {} y)
+             where authority (P);
+}

@@ -1,0 +1,18 @@
+package jif.principals;
+
+public class Chuck extends ExternalPrincipal {
+    public Chuck {this:;this!:}() where authority (this) {
+	super("Chuck");
+    final principal c = new server();
+    addDelegatesTo(c);
+
+    }
+
+    private static Chuck{*!:*} P;
+    public static Principal getInstance{*!:*}() {
+	if (P == null) {
+	    P = new Chuck();
+	}
+	return P;
+    }
+}

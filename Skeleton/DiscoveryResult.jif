@@ -1,0 +1,13 @@
+public class DiscoveryResult [ principal Q] {
+  // encodes results of discovery from P about Q's profile
+  final boolean {Q ->} discoveryResult;
+
+
+  final Profile [{Q ->}] {Q ->} profile;
+
+  DiscoveryResult (boolean { Q ->} r,
+                   Profile [{Q ->}] {Q ->} p) {
+      this.discoveryResult = r;
+      this.profile = p;
+  }
+}

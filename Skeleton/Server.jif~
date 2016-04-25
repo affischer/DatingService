@@ -1,0 +1,41 @@
+import java.io.PrintStream;
+import jif.runtime.Runtime;
+import jif.util.ArrayList;
+
+
+public class Server authority (server) {
+  Server () {
+  }
+
+
+  final ArrayList[{server<-}]{server<-} users = new ArrayList[{server<-}]();
+
+  void setupUsers {server <- }
+   (PrintStream[{}] {server<-} out)
+   where authority (server) {
+     if (out == null) return;
+     out.println ("Starting user creation");
+
+     // TODO: placeholder
+
+     out.println ("Finished user creation");
+  }
+
+
+  void exampleDiscoverForUser0 {server <- }
+   (PrintStream[{}] {server<-} out) {
+     if (out == null) return;
+     final ArrayList[{server<-}] users = this.users;
+     if (users == null) return;
+     out.println("Found non-null user collection");
+
+     // TODO:: discover who can see results for user 0
+     //
+
+     out.println("Done discovery");
+
+     // TODO: display queue for 0-th user
+
+     out.println("All done.");
+   }
+}

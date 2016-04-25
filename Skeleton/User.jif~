@@ -1,0 +1,36 @@
+// do we need authority P here ?
+// it may be only needed in the Discoverer
+// after all
+
+import jif.util.ArrayList;
+import java.io.PrintStream;
+
+
+public class User [principal P] authority (P) {
+    Profile [ {P -> ; P <-} ] {P<-} profile;
+
+    private ArrayList [{ P-> } ] { P-> } queue =
+      new ArrayList [{ P-> } ] ();
+
+    Discoverer [P] { P <- } discoverer;
+
+    DiscoveryResult [q] { q -> }
+    discover{P <-; q<-; server <-} (
+      principal {} q,
+      Profile [{q->; q<-}] {P <-; q <-; server<-} candidate)
+      {
+        // TODO: placeholder; finish this
+        return null;
+    }
+
+
+    void addProfileToBrowsingQueue{P->} (Profile[{P ->}]{P ->} p) {
+
+    }
+
+    void displayQueue{} (PrintStream[{}]{} out) {
+
+    }
+
+
+}
