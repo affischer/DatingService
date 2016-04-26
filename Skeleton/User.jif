@@ -34,8 +34,7 @@ public class User [principal P] authority (P) {
 	}catch(Exception e){}
     }
 
-    void displayQueue{} (PrintStream[{}]{} out) 
-    where authority(P){	
+    void displayQueue{} (PrintStream[{}]{} out){	
 	if(out==null)
 	    return;
 	final String{} result = getDeclassifiedQueue();
@@ -49,8 +48,7 @@ public class User [principal P] authority (P) {
 	return result;
     }
 
-    private String{P->} getRestrictedQueue{P->} (ArrayList[{P->}]{P->} queue)
-				where authority(P){
+    private String{P->} getRestrictedQueue{P->} (ArrayList[{P->}]{P->} queue){
 	String{P->} result = "";
 	if(queue==null)
 	    return "";
