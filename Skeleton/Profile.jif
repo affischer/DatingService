@@ -8,9 +8,10 @@ public class Profile [label L] implements JifObject[L] {
   int {L} last_online;
   // TODO: these are just placeholder implementations...
   //
-  public String{L} toString  (){
-      String{L} result ="";
-      result +="name:"+this.name+"\n";
+
+  public String{L} toString(){
+      String{L} result = this.name;
+      result +="name:"+result+"\n";
       return result;
   }
 

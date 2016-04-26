@@ -34,36 +34,48 @@ public class User [principal P] authority (P) {
 	}catch(Exception e){}
     }
 
-    void displayQueue{} (PrintStream[{P->}]{} out) 
-    where authority(P){
-	String{P->} res="";
-	final ArrayList[{P->}]{P->}queue = this.queue;
-	if(out==null||queue==null)
+    void displayQueue{} (PrintStream[{}]{} out) 
+    where authority(P){	
+	if(out==null)
 	    return;
-	
+	final String{} result = getDeclassifiedQueue();
+	out.println(result);
+    }
+
+    private String{} getDeclassifiedQueue{} () where authority(P){
+        final ArrayList[{P->}]{P->}queue = this.queue;
+	String{P->} q = getRestrictedQueue(queue);
+	final String{} result = declassify(q,{P->} to {});
+	return result;
+    }
+
+    private String{P->} getRestrictedQueue{P->} (ArrayList[{P->}]{P->} queue)
+				where authority(P){
+	String{P->} result = "";
+	if(queue==null)
+	    return "";
 	for(int i=0;i<queue.size();i++){
 	    JifObject[{P->}]{P->} current;
 	    try{
 		current =  queue.get(i);
 	    }catch(IndexOutOfBoundsException e){
-		return;
+		return "";
 	    }
 	    Profile[{P->}]{P->} prof;
 	    try{
 		prof = ((Profile[{P->}])current);
 	    }catch(ClassCastException e){
-		return;
+		return "";
 	    }
 	    
 	    if(prof==null)
-		return;
+		return "";
 	    
-	    final String{P->} result = prof.toString();
-	    res += declassify(result,{P->} to {});
-	}
+	    result += prof.toString()+"\n";
+	}    
+	    
 	
-	String{} result = declassify(res,{P->} to {});
-
-	out.println(result);	
+	return result;
     }
+
 }
