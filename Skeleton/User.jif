@@ -57,12 +57,16 @@ public class User [principal P] authority (P) {
 	if(queue==null)
 	    return "queue is null";
 	for(int{P->} i=0;i<queue.size();i++){
-	    
 	    Profile[{P->}]{P->} prof= null;
 	    try{
 		JifObject[{P->}]{P->} j = getProfile(i,queue);
 		if(j instanceof Profile[{P->}]){
 		    prof = (Profile[{P->}]) j;
+		}else{
+		    result+="\ncast from JifObject to Profile failed\n"; 
+		    
+			result+= "class was: "+j.getClass().toString()+"\n\n";
+		    
 		}
 	    }catch(ClassCastException e){
 		result +="ClassCastExeception Thrown";
@@ -78,7 +82,6 @@ public class User [principal P] authority (P) {
 	    }
 	    result += i+":"+prof.toString()+"\n";
 	}    
-	    
 	
 	return result+"\n";
     }
