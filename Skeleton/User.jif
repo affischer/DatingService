@@ -38,7 +38,7 @@ public class User [principal P] authority (P) {
 	if(out==null)
 	    return;
 	final String{} result = getDeclassifiedQueue();
-	out.println(result);
+	out.print(result);
     }
 
     private String{} getDeclassifiedQueue{} () where authority(P){
