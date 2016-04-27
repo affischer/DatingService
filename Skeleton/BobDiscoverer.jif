@@ -6,15 +6,13 @@ public class BobDiscoverer [principal P] implements Discoverer [P] authority (P)
 	where authority (P){
 	Profile {q->} prof = generateProfile(x,q,y);
 	
-	final boolean {q->} condition = satisfiesCondition(x,q,y);
-
-	if(condition){    
-	    DiscoveryResult[q] {q->} res;
-	    res = new DiscoveryResult[q](true,prof);    
-	    return res;
-	}
+	final boolean {q->} condition =  satisfiesCondition(x,q,y);
 	DiscoveryResult[q] {q->} res;
-	res = new DiscoveryResult[q](false,null);
+	if(condition){    
+	    res = new DiscoveryResult[q](true,prof);    
+	}else{
+	    res = new DiscoveryResult[q](false,null);
+	}
 	return res;
     }
     
@@ -55,7 +53,7 @@ public class BobDiscoverer [principal P] implements Discoverer [P] authority (P)
      principal  {} q,
      Profile[{q ->; q<-} ] {} y)
      where authority (P){
-	final Profile [{q->}] {q->} prof = new Profile();
+	Profile [{q->}] {q->} prof = new Profile();
 	if(x==null)
 	    return prof;
 	if(y==null)

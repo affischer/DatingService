@@ -37,13 +37,16 @@ public class Server authority (server) {
      final Profile[{bob->;bob<-}]{bob<-} bobProfile = new Profile();
      if(server actsfor bob){
 	 bobProfile.name ="bob";
-	 bobProfile.yyyy = 1993;
+	 bobProfile.yyyy = 1992;
 	 bobProfile.likes = new String[0];
 	 bobProfile.location_x =1;
 	 bobProfile.location_x =2;
 	 bobProfile.last_online =12;
 	 bobUser.profile = bobProfile;
 	 bobUser.discoverer = new BobDiscoverer();
+     
+	 
+
      }
      JifObject bobCollection = new CollectionUser(bob,bobUser);
      
@@ -67,30 +70,34 @@ public class Server authority (server) {
      final Profile[{dolores->;dolores<-}]{dolores<-} doloresProfile = new Profile();
      if(server actsfor dolores){
 	 doloresProfile.name ="dolores";
-	 doloresProfile.yyyy = 1993;
+	 doloresProfile.yyyy = 1293;
 	 doloresProfile.likes = new String[0];
 	 doloresProfile.location_x =1;
 	 doloresProfile.location_x =2;
 	 doloresProfile.last_online =12;
 	 doloresUser.profile = doloresProfile;
-	 doloresUser.discoverer = new DefaultDiscoverer();
+	 doloresUser.discoverer = new BobDiscoverer();
      }
      JifObject doloresCollection = new CollectionUser(dolores,doloresUser);
 
      try{
 	 users.add(aliceCollection);
+	 out.println("Alice added");
 	 users.add(bobCollection);
+	 out.println("Bob added");
 	 users.add(chuckCollection);
+	 out.println("Chuck added");
 	 users.add(doloresCollection);
+	 out.println("Dolores added");
      }catch(NullPointerException e){
-	 return;
+	 out.println("failure");
      }
    }
 
 
 
   void exampleDiscoverForUser0 {server <- }
-   (PrintStream[{}] {server<-} out) {
+    (PrintStream[{}] {server<-} out){
      if (out == null) return;
      final ArrayList[{server<-}] users = this.users;
      if (users == null) return;
@@ -98,23 +105,79 @@ public class Server authority (server) {
 
      // TODO:: discover who can see results for user 0
      //
-     User alice;
+     CollectionUser[{server<-}]{server<-} user0 = null;
      try{
-	 CollectionUser collection = (CollectionUser[{server<-}]) users.get(0);
-     
-	 for(int i=1;i<users.size();i++){
-	     CollectionUser otherCollection = (CollectionUser[{server<-}]) users.get(0);
-	     //TODO: finish this
-	 }
-     }catch(Exception e){return;}
+	 user0 = (CollectionUser[{server<-}]) users.get(0);
+     }catch(Exception e){
+	 return;
+     }
 
+     discover(users, user0);
+     
      out.println("Done discovery");
 
      // TODO: display queue for 0-th user
+     display(user0,out);
 
      out.println("All done.");
    }
 
+    private void display{server<-}(CollectionUser[{server<-}]{server<-} user0,
+				   PrintStream[{}] {server<-} out){
+	if(user0 == null || user0.u==null){
+	    return;
+	}
+	user0.u.displayQueue(out);
+    }
 
+
+    //TODO RENAME
+    private void discover{server<-}(ArrayList[{server<-}]{server<-} users,
+				    CollectionUser[{server<-}]{server<-} user0){
+	if(users == null || user0 == null)
+	    return;
+	for(int i=1;i<users.size();i++){
+	    CollectionUser otherUser = null;
+	    try{
+		otherUser = (CollectionUser[{server<-}]) users.get(i);
+	    }catch(ClassCastException e){
+		return;
+	    }catch(Exception e){
+		return;
+	    }
+	    if(otherUser==null)
+		return;
+	    disc(user0,otherUser);
+	}
+    }
     
+    //TODO RENAME
+    private void disc{server<-}(CollectionUser[{server<-}]{server<-} collection0,
+				CollectionUser[{server<-}]{server<-} otherCollection){
+	if(collection0 == null||otherCollection==null){
+	    return;
+	}
+	
+	final principal{} alicePrin = collection0.p;
+	final User[alicePrin]{server<-} alice = collection0.u;
+	if(alice==null)
+	    return;
+	final Profile[{alicePrin->;alicePrin<-}]{alicePrin<-} aliceProfile = declassify(alice,{server:} to {}).profile;
+	
+	final principal{} otherPrin = otherCollection.p;
+	User[otherPrin]{server<-} otherUser = otherCollection.u;
+	
+	if(otherUser==null){
+	    return;
+	}
+	DiscoveryResult[alicePrin]{alicePrin->} result = otherUser.discover(alicePrin,aliceProfile);
+	
+	if(result==null)
+	    return;
+	Profile[{alicePrin->}]{alicePrin->} resprof = result.profile;
+	if(resprof==null)
+	    return;
+
+	alice.addProfileToBrowsingQueue(resprof);
+    }
 }

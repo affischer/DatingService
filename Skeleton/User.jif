@@ -19,61 +19,76 @@ public class User [principal P] authority (P) {
       principal {} q,
       Profile [{q->; q<-}] {P <-; q <-; server<-} candidate)
       {
-        // TODO: placeholder; finish this
-	  try{
-	      return discoverer.discover(profile,q,candidate);
-	  }catch(NullPointerException npe){
+	  Discoverer[P] {P<-} discoverer = this.discoverer;
+          if(discoverer==null)
 	      return null;
-	  }
+	  return discoverer.discover(profile,q,candidate);
+	  
     }
 
 
     void addProfileToBrowsingQueue{P->} (Profile[{P ->}]{P ->} p) {
+	if(p==null)
+	    return;
 	try{
 	    queue.add(p);
-	}catch(Exception e){}
+	}catch(Exception e){
+	    
+	}
     }
 
     void displayQueue{} (PrintStream[{}]{} out){	
 	if(out==null)
 	    return;
-	final String{} result = getDeclassifiedQueue();
+	out.println("Printing queue");
+	String{} result = getDeclassifiedQueue();
 	out.print(result);
     }
 
     private String{} getDeclassifiedQueue{} () where authority(P){
         final ArrayList[{P->}]{P->}queue = this.queue;
 	String{P->} q = getRestrictedQueue(queue);
-	final String{} result = declassify(q,{P->} to {});
+	String{} result = declassify(q,{P->} to {});
 	return result;
     }
 
     private String{P->} getRestrictedQueue{P->} (ArrayList[{P->}]{P->} queue){
 	String{P->} result = "";
 	if(queue==null)
-	    return "";
-	for(int i=0;i<queue.size();i++){
-	    JifObject[{P->}]{P->} current;
+	    return "queue is null";
+	for(int{P->} i=0;i<queue.size();i++){
+	    
+	    Profile[{P->}]{P->} prof= null;
 	    try{
-		current =  queue.get(i);
-	    }catch(IndexOutOfBoundsException e){
-		return "";
-	    }
-	    Profile[{P->}]{P->} prof;
-	    try{
-		prof = ((Profile[{P->}])current);
+		JifObject[{P->}]{P->} j = getProfile(i,queue);
+		if(j instanceof Profile[{P->}]){
+		    prof = (Profile[{P->}]) j;
+		}
 	    }catch(ClassCastException e){
-		return "";
+		result +="ClassCastExeception Thrown";
+		continue;
+	    }catch(Exception e){
+		result +="other";
+		continue;
 	    }
 	    
-	    if(prof==null)
-		return "";
-	    
-	    result += prof.toString()+"\n";
+	    if(prof==null){
+		result +="Something went wrong";
+		continue;
+	    }
+	    result += i+":"+prof.toString()+"\n";
 	}    
 	    
 	
-	return result;
+	return result+"\n";
+    }
+
+    private JifObject[{P->}]{P->} getProfile{P->}(int{P->} index,ArrayList[{P->}]{P->} queue){
+        try{
+	    return queue.get(index);
+	}catch(Exception ee){
+	    return null;
+	}
     }
 
 }
