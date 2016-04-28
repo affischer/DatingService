@@ -10,8 +10,8 @@ public class Profile [label L] implements JifObject[L] {
   //
 
   public String{L} toString(){
-      String{L} result = this.name;
-      result +="name:"+result+"\n";
+      String{L} name = this.name;
+      String{L} result ="Name:"+name;
       return result;
   }
 

@@ -70,7 +70,7 @@ public class Server authority (server) {
      final Profile[{dolores->;dolores<-}]{dolores<-} doloresProfile = new Profile();
      if(server actsfor dolores){
 	 doloresProfile.name ="dolores";
-	 doloresProfile.yyyy = 1293;
+	 doloresProfile.yyyy = 1993;
 	 doloresProfile.likes = new String[0];
 	 doloresProfile.location_x =1;
 	 doloresProfile.location_x =2;

@@ -57,40 +57,28 @@ public class User [principal P] authority (P) {
 	if(queue==null)
 	    return "queue is null";
 	for(int{P->} i=0;i<queue.size();i++){
-	    Profile[{P->}]{P->} prof= null;
-	    try{
-		JifObject[{P->}]{P->} j = getProfile(i,queue);
-		if(j instanceof Profile[{P->}]){
-		    prof = (Profile[{P->}]) j;
-		}else{
-		    result+="\ncast from JifObject to Profile failed\n"; 
-		    
-			result+= "class was: "+j.getClass().toString()+"\n\n";
-		    
-		}
-	    }catch(ClassCastException e){
-		result +="ClassCastExeception Thrown";
-		continue;
-	    }catch(Exception e){
-		result +="other";
-		continue;
-	    }
+	    JifObject[{P->}]{P->} prof= null;
+	    prof = getProfile(i,queue);
 	    
 	    if(prof==null){
 		result +="Something went wrong";
 		continue;
 	    }
-	    result += i+":"+prof.toString()+"\n";
+	    result += i+1+":"+prof.toString()+"\n";
 	}    
 	
-	return result+"\n";
+	return result;
     }
 
-    private JifObject[{P->}]{P->} getProfile{P->}(int{P->} index,ArrayList[{P->}]{P->} queue){
+    private JifObject[{P->}]{P->} getProfile{P->}(int{P->} index,ArrayList[{P->}]{P->} queue) where authority(P){
+	if(queue==null){
+	    return new CollectionUser(P,new User[P]());
+	}
+
         try{
 	    return queue.get(index);
-	}catch(Exception ee){
-	    return null;
+	}catch(IndexOutOfBoundsException p){
+	    return new CollectionUser(P, new User[P]());
 	}
     }
 
