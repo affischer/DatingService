@@ -7,18 +7,18 @@ public class BobDiscoverer [principal P] implements Discoverer [P] authority (P)
         
 	if(satisfiesCondition(x,q,y)){    
 	    return new DiscoveryResult[q](true,prof);    
-	}else{
-	    return new DiscoveryResult[q](false,null);
 	}
+	return new DiscoveryResult[q](false,null);
+	
     }
     
     private boolean {q->} satisfiesCondition{P <-;q<-;server<-}
     (Profile[{P ->; P <-}] {} x,
-     principal  {} q,
+     principal{} q,
      Profile[{q ->; q<-} ] {} y){
 	int{q->} diff = getAgeDiff(x,q,y);	
 	try{
-	    return (diff*diff)/diff<3;	    
+	    return (diff*diff)/diff<=3;	    
 	}catch(ArithmeticException e){
 	    return 0==diff;
 	}
@@ -26,13 +26,13 @@ public class BobDiscoverer [principal P] implements Discoverer [P] authority (P)
     
     private int {q->} getAgeDiff{P<-;q<-;server<-}
     (Profile[{P ->; P <-}] {} x,
-     principal  {} q,
+     principal{} q,
      Profile[{q ->; q<-} ] {} y)
 	where authority(P){
 	if(x==null || y==null)
 	    return 1000;
-	int{q->} otherAge = declassify(y.yyyy,{q:} to {q->});
-	int{q->} bobAge = endorse(declassify(x.yyyy,{P:} to {}),{} to {q->});
+	int{q->} otherAge = y.yyyy;
+	int{q->} bobAge = declassify(x.yyyy,{P:} to {});
 	int{q->} diff = otherAge-bobAge;
 	return diff;
 	

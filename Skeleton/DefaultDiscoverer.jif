@@ -2,8 +2,7 @@ class DefaultDiscoverer [principal P] implements Discoverer [P] authority (P){
     public DiscoveryResult [q] {q->} discover {P <-;q<-;server<-}
     (Profile[{P ->; P <-}] {} x,
      principal  {} q,
-     Profile[{q ->; q<-} ] {} y)
-	where authority (P){
+     Profile[{q ->; q<-} ] {} y){
 	return new DiscoveryResult[q](false,null);
     }
 }
