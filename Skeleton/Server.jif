@@ -93,7 +93,8 @@ public class Server authority (server) {
 	discoverForUser(out,0);
     }
 
-    private void discoverForUser{server<-}(PrintStream[{}] {server<-} out, int{server<-} index){
+    private void discoverForUser{server<-}(PrintStream[{}] {server<-} out, 
+					   int{server<-} index){
 	if (out == null) return;
 	ArrayList[{server<-}] users = this.users;
 	if (users == null) return;
