@@ -3,7 +3,7 @@ public class BobDiscoverer [principal P] implements Discoverer [P] authority (P)
     (Profile[{P ->; P <-}] {} x,
      principal  {} q,
      Profile[{q ->; q<-} ] {} y){
-	Profile {q->} prof = generateProfile(x,q,y);
+	Profile {q->} prof = generateProfile(x,q);
         
 	if(isWithin3Years(x,q,y)){    
 	    return new DiscoveryResult[q](true,prof);    
@@ -31,11 +31,10 @@ public class BobDiscoverer [principal P] implements Discoverer [P] authority (P)
 
     private Profile [{q->}] {q->} generateProfile{P <-;q<-;server<-}
     (Profile[{P ->; P <-}] {} x,
-     principal  {} q,
-     Profile[{q ->; q<-} ] {} y)
+     principal  {} q)
 	where authority (P){
 	Profile [{q->}] {q->} prof = new Profile();
-	if(x==null || y==null)
+	if(x==null)
 	    return prof;
 	prof.name = declassify(x.name,{P:} to {});
         prof.yyyy = declassify(x.yyyy,{P:} to {});
