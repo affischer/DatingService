@@ -21,19 +21,16 @@ public class User [principal P] authority (P) {
       {
 	  Discoverer[P] {P<-} discoverer = this.discoverer;
           if(discoverer==null)
-	      return null;
-	  return discoverer.discover(profile,q,candidate);
-	  
+	      return new DiscoveryResult[q](false,null);
+	  return discoverer.discover(profile,q,candidate);	  
     }
 
 
     void addProfileToBrowsingQueue{P->} (Profile[{P ->}]{P ->} p) {
-	if(p==null)
-	    return;
-	try{
+        try{
 	    queue.add(p);
 	}catch(Exception e){
-	    
+	    return;
 	}
     }
 
@@ -58,28 +55,17 @@ public class User [principal P] authority (P) {
 	    return "queue is null";
 	for(int{P->} i=0;i<queue.size();i++){
 	    JifObject[{P->}]{P->} prof= null;
-	    prof = getProfile(i,queue);
-	    
+	    try{
+		prof = queue.get(i);
+	    }catch(IndexOutOfBoundsException e){
+		continue;
+	    }
 	    if(prof==null){
 		result +="Something went wrong";
 		continue;
 	    }
 	    result += i+1+":"+prof.toString()+"\n";
-	}    
-	
+	}    	
 	return result;
     }
-
-    private JifObject[{P->}]{P->} getProfile{P->}(int{P->} index,ArrayList[{P->}]{P->} queue) where authority(P){
-	if(queue==null){
-	    return new CollectionUser(P,new User[P]());
-	}
-
-        try{
-	    return queue.get(index);
-	}catch(IndexOutOfBoundsException p){
-	    return new CollectionUser(P, new User[P]());
-	}
-    }
-
 }
