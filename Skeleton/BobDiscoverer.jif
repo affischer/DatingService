@@ -5,37 +5,28 @@ public class BobDiscoverer [principal P] implements Discoverer [P] authority (P)
      Profile[{q ->; q<-} ] {} y){
 	Profile {q->} prof = generateProfile(x,q,y);
         
-	if(satisfiesCondition(x,q,y)){    
+	if(isWithin3Years(x,q,y)){    
 	    return new DiscoveryResult[q](true,prof);    
 	}
 	return new DiscoveryResult[q](false,null);
 	
     }
     
-    private boolean {q->} satisfiesCondition{P <-;q<-;server<-}
+    private boolean {q->} isWithin3Years{P <-;q<-;server<-}
     (Profile[{P ->; P <-}] {} x,
      principal{} q,
-     Profile[{q ->; q<-} ] {} y){
-	int{q->} diff = getAgeDiff(x,q,y);	
+     Profile[{q ->; q<-} ] {} y)
+     where authority(P){
+	if(x==null || y==null)
+	    return false;
+	int{q->} otherAge = y.yyyy;
+	int{q->} bobAge = declassify(x.yyyy,{P:} to {});
+	int{q->} diff = otherAge-bobAge;	
 	try{
 	    return (diff*diff)/diff<=3;	    
 	}catch(ArithmeticException e){
 	    return 0==diff;
 	}
-    }
-    
-    private int {q->} getAgeDiff{P<-;q<-;server<-}
-    (Profile[{P ->; P <-}] {} x,
-     principal{} q,
-     Profile[{q ->; q<-} ] {} y)
-	where authority(P){
-	if(x==null || y==null)
-	    return 1000;
-	int{q->} otherAge = y.yyyy;
-	int{q->} bobAge = declassify(x.yyyy,{P:} to {});
-	int{q->} diff = otherAge-bobAge;
-	return diff;
-	
     }
 
     private Profile [{q->}] {q->} generateProfile{P <-;q<-;server<-}
