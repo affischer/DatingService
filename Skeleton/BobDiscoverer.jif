@@ -42,7 +42,7 @@ public class BobDiscoverer [principal P] implements Discoverer [P] authority (P)
     (Profile[{P ->; P <-}] {} x,
      principal  {} q,
      Profile[{q ->; q<-} ] {} y)
-     where authority (P){
+	where authority (P){
 	Profile [{q->}] {q->} prof = new Profile();
 	if(x==null || y==null)
 	    return prof;

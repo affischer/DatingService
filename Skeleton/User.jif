@@ -10,22 +10,21 @@ public class User [principal P] authority (P) {
     Profile [ {P -> ; P <-} ] {P<-} profile;
 
     private ArrayList [{ P-> } ] { P-> } queue =
-      new ArrayList [{ P-> } ] ();
+					     new ArrayList [{ P-> } ] ();
 
     Discoverer [P] { P <- } discoverer;
 
     DiscoveryResult [q] { q -> }
     discover{P <-; q<-; server <-} (
-      principal {} q,
-      Profile [{q->; q<-}] {P <-; q <-; server<-} candidate)
-      {
-	  Discoverer[P] {P<-} discoverer = this.discoverer;
-          if(discoverer==null)
-	      return new DiscoveryResult[q](false,null);
-	  return discoverer.discover(profile,q,candidate);	  
+    principal {} q,
+    Profile [{q->; q<-}] {P <-; q <-; server<-} candidate){
+	Discoverer[P] {P<-} discoverer = this.discoverer;
+	if(discoverer==null)
+	    return new DiscoveryResult[q](false,null);
+	return discoverer.discover(profile,q,candidate);	  
     }
-
-
+    
+    
     void addProfileToBrowsingQueue{P->} (Profile[{P ->}]{P ->} p) {
         try{
 	    queue.add(p);
