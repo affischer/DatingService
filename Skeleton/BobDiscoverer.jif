@@ -2,34 +2,25 @@ public class BobDiscoverer [principal P] implements Discoverer [P] authority (P)
     public DiscoveryResult [q] {q->} discover {P <-;q<-;server<-}
     (Profile[{P ->; P <-}] {} x,
      principal  {} q,
-     Profile[{q ->; q<-} ] {} y)
-	where authority (P){
+     Profile[{q ->; q<-} ] {} y){
 	Profile {q->} prof = generateProfile(x,q,y);
-	
-	final boolean {q->} condition =  satisfiesCondition(x,q,y);
-	DiscoveryResult[q] {q->} res;
-	if(condition){    
-	    res = new DiscoveryResult[q](true,prof);    
+        
+	if(satisfiesCondition(x,q,y)){    
+	    return new DiscoveryResult[q](true,prof);    
 	}else{
-	    res = new DiscoveryResult[q](false,null);
+	    return new DiscoveryResult[q](false,null);
 	}
-	return res;
     }
     
     private boolean {q->} satisfiesCondition{P <-;q<-;server<-}
     (Profile[{P ->; P <-}] {} x,
      principal  {} q,
-     Profile[{q ->; q<-} ] {} y)
-     where authority(P){
-	
-	final int{q->} diff = getAgeDiff(x,q,y);
-	
+     Profile[{q ->; q<-} ] {} y){
+	int{q->} diff = getAgeDiff(x,q,y);	
 	try{
-	    final boolean {q->} condition = (diff*diff)/diff<3;
-	    return condition;
+	    return (diff*diff)/diff<3;	    
 	}catch(ArithmeticException e){
-	    final boolean {q->} condition = 0==diff;
-	    return condition;
+	    return 0==diff;
 	}
     }
     
@@ -40,13 +31,12 @@ public class BobDiscoverer [principal P] implements Discoverer [P] authority (P)
 	where authority(P){
 	if(x==null || y==null)
 	    return 1000;
-	final int{q->} otherAge = declassify(y.yyyy,{q:} to {q->});
-	final int{q->} bobAge = endorse(declassify(x.yyyy,{P:} to {}),{} to {q->});
-	final int{q->} diff = otherAge-bobAge;
+	int{q->} otherAge = declassify(y.yyyy,{q:} to {q->});
+	int{q->} bobAge = endorse(declassify(x.yyyy,{P:} to {}),{} to {q->});
+	int{q->} diff = otherAge-bobAge;
 	return diff;
 	
     }
-
 
     private Profile [{q->}] {q->} generateProfile{P <-;q<-;server<-}
     (Profile[{P ->; P <-}] {} x,
@@ -54,15 +44,10 @@ public class BobDiscoverer [principal P] implements Discoverer [P] authority (P)
      Profile[{q ->; q<-} ] {} y)
      where authority (P){
 	Profile [{q->}] {q->} prof = new Profile();
-	if(x==null)
+	if(x==null || y==null)
 	    return prof;
-	if(y==null)
-	    return prof;
-	final String {} name = declassify(x.name,{P:} to {});
-	final int{} age = declassify(x.yyyy,{P:} to {});
-	prof.name = name;
-	prof.yyyy = age;
-        return prof;
-	
+	prof.name = declassify(x.name,{P:} to {});
+        prof.yyyy = declassify(x.yyyy,{P:} to {});
+        return prof;	
     }
 }

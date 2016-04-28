@@ -34,38 +34,25 @@ public class User [principal P] authority (P) {
 	}
     }
 
-    void displayQueue{} (PrintStream[{}]{} out){	
+    void displayQueue{} (PrintStream[{}]{} out) where authority(P){	
 	if(out==null)
 	    return;
 	out.println("Printing queue");
-	String{} result = getDeclassifiedQueue();
+	String{} result = declassify(getRestrictedQueue(),{P->} to {});
 	out.print(result);
     }
 
-    private String{} getDeclassifiedQueue{} () where authority(P){
-        final ArrayList[{P->}]{P->}queue = this.queue;
-	String{P->} q = getRestrictedQueue(queue);
-	String{} result = declassify(q,{P->} to {});
-	return result;
-    }
-
-    private String{P->} getRestrictedQueue{P->} (ArrayList[{P->}]{P->} queue){
+    private String{P->} getRestrictedQueue{P->} (){
+	final ArrayList[{P->}]{P->} queue = this.queue;
 	String{P->} result = "";
 	if(queue==null)
 	    return "queue is null";
-	for(int{P->} i=0;i<queue.size();i++){
-	    JifObject[{P->}]{P->} prof= null;
+	for(int i=0;i<queue.size();i++){
 	    try{
-		prof = queue.get(i);
-	    }catch(IndexOutOfBoundsException e){
-		continue;
-	    }
-	    if(prof==null){
-		result +="Something went wrong";
-		continue;
-	    }
-	    result += i+1+":"+prof.toString()+"\n";
-	}    	
+		JifObject[{P->}]{P->} prof = queue.get(i);
+		result += i+1+":"+prof.toString()+"\n";
+	    }catch(Exception e){}
+	}	
 	return result;
     }
 }

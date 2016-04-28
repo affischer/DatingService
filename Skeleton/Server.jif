@@ -4,180 +4,161 @@ import jif.util.ArrayList;
 
 
 public class Server authority (server) {
-  Server () {
-  }
+    Server () {
+    }
 
 
-  final ArrayList[{server<-}]{server<-} users = new ArrayList[{server<-}]();
+    final ArrayList[{server<-}]{server<-} users = new ArrayList[{server<-}]();
 
-  void setupUsers {server <- }
-   (PrintStream[{}] {server<-} out)
-   where authority (server) {
-     if (out == null) return;
-     out.println ("Starting user creation");
+    void setupUsers {server <- }
+    (PrintStream[{}] {server<-} out)
+	where authority (server) {
+	if (out == null) return;
+	out.println ("Starting user creation");
      
-     // TODO: placeholder
-     final Principal alice = Alice;
-     final User [alice] aliceUser = new User();
-     final Profile[{alice->;alice<-}]{alice<-} aliceProfile = new Profile();
-     if(server actsfor alice){
-	 aliceProfile.name ="alice";
-	 aliceProfile.yyyy = 1993;
-	 aliceProfile.likes = new String[0];
-	 aliceProfile.location_x =1;
-	 aliceProfile.location_x =2;
-	 aliceProfile.last_online =12;
-	 aliceUser.profile = aliceProfile;
-	 aliceUser.discoverer = new DefaultDiscoverer();
-     }
-     JifObject aliceCollection = new CollectionUser(alice,aliceUser);
+	// TODO: placeholder
+	final Principal alice = Alice;
+	final User [Alice] aliceUser = new User();
+	final Profile[{Alice->;Alice<-}]{Alice<-} aliceProfile = new Profile();
+	if(server actsfor Alice){
+	    aliceProfile.name ="alice";
+	    aliceProfile.yyyy = 1993;
+	    aliceProfile.likes = new String[0];
+	    aliceProfile.location_x =1;
+	    aliceProfile.location_x =2;
+	    aliceProfile.last_online =12;
+	    aliceUser.profile = aliceProfile;
+	    aliceUser.discoverer = new DefaultDiscoverer();
+	}
+	JifObject aliceCollection = new CollectionUser(Alice,aliceUser);
      
-     final Principal bob = Bob;
-     final User [bob] bobUser = new User();
-     final Profile[{bob->;bob<-}]{bob<-} bobProfile = new Profile();
-     if(server actsfor bob){
-	 bobProfile.name ="bob";
-	 bobProfile.yyyy = 1992;
-	 bobProfile.likes = new String[0];
-	 bobProfile.location_x =1;
-	 bobProfile.location_x =2;
-	 bobProfile.last_online =12;
-	 bobUser.profile = bobProfile;
-	 bobUser.discoverer = new BobDiscoverer();
+	User [Bob] bobUser = new User();
+	Profile[{Bob->;Bob<-}]{Bob<-} bobProfile = new Profile();
+	if(server actsfor Bob){
+	    bobProfile.name ="bob";
+	    bobProfile.yyyy = 1992;
+	    bobProfile.likes = new String[0];
+	    bobProfile.location_x =1;
+	    bobProfile.location_x =2;
+	    bobProfile.last_online =12;
+	    bobUser.profile = bobProfile;
+	    bobUser.discoverer = new BobDiscoverer();
+	}
+	JifObject bobCollection = new CollectionUser(Bob,bobUser);
      
-	 
+	User [Chuck] chuckUser = new User();
+	Profile[{Chuck->;Chuck<-}]{Chuck<-} chuckProfile = new Profile();
+	if(server actsfor Chuck){
+	    chuckProfile.name ="chuck";
+	    chuckProfile.yyyy = 1993;
+	    chuckProfile.likes = new String[0];
+	    chuckProfile.location_x =1;
+	    chuckProfile.location_x =2;
+	    chuckProfile.last_online =12;
+	    chuckUser.profile = chuckProfile;
+	    chuckUser.discoverer = new DefaultDiscoverer();
+	}
+	JifObject chuckCollection = new CollectionUser(Chuck,chuckUser);
 
-     }
-     JifObject bobCollection = new CollectionUser(bob,bobUser);
-     
-     final Principal chuck = Chuck;
-     final User [chuck] chuckUser = new User();
-     final Profile[{chuck->;chuck<-}]{chuck<-} chuckProfile = new Profile();
-     if(server actsfor chuck){
-	 chuckProfile.name ="chuck";
-	 chuckProfile.yyyy = 1993;
-	 chuckProfile.likes = new String[0];
-	 chuckProfile.location_x =1;
-	 chuckProfile.location_x =2;
-	 chuckProfile.last_online =12;
-	 chuckUser.profile = chuckProfile;
-	 chuckUser.discoverer = new DefaultDiscoverer();
-     }
-     JifObject chuckCollection = new CollectionUser(chuck,chuckUser);
+	User [Dolores] doloresUser = new User();
+	Profile[{Dolores->;Dolores<-}]{Dolores<-} doloresProfile = new Profile();
+	if(server actsfor Dolores){
+	    doloresProfile.name ="dolores";
+	    doloresProfile.yyyy = 1993;
+	    doloresProfile.likes = new String[0];
+	    doloresProfile.location_x =1;
+	    doloresProfile.location_x =2;
+	    doloresProfile.last_online =12;
+	    doloresUser.profile = doloresProfile;
+	    doloresUser.discoverer = new BobDiscoverer();
+	}
+	JifObject doloresCollection = new CollectionUser(Dolores,doloresUser);
 
-     final Principal dolores = Dolores;
-     final User [dolores] doloresUser = new User();
-     final Profile[{dolores->;dolores<-}]{dolores<-} doloresProfile = new Profile();
-     if(server actsfor dolores){
-	 doloresProfile.name ="dolores";
-	 doloresProfile.yyyy = 1993;
-	 doloresProfile.likes = new String[0];
-	 doloresProfile.location_x =1;
-	 doloresProfile.location_x =2;
-	 doloresProfile.last_online =12;
-	 doloresUser.profile = doloresProfile;
-	 doloresUser.discoverer = new BobDiscoverer();
-     }
-     JifObject doloresCollection = new CollectionUser(dolores,doloresUser);
-
-     try{
-	 users.add(aliceCollection);
-	 out.println("Alice added");
-	 users.add(bobCollection);
-	 out.println("Bob added");
-	 users.add(chuckCollection);
-	 out.println("Chuck added");
-	 users.add(doloresCollection);
-	 out.println("Dolores added");
-     }catch(NullPointerException e){
-	 out.println("failure");
-     }
-   }
+	try{
+	    users.add(aliceCollection);
+	    out.println("Alice added");
+	    users.add(bobCollection);
+	    out.println("Bob added");
+	    users.add(chuckCollection);
+	    out.println("Chuck added");
+	    users.add(doloresCollection);
+	    out.println("Dolores added");
+	}catch(NullPointerException e){
+	    out.println("failure");
+	}
+    }
 
 
+    void exampleDiscoverForUser0 {server <- }(PrintStream[{}] {server<-} out){
+	discoverForUser(out,0);
+    }
 
-  void exampleDiscoverForUser0 {server <- }
-    (PrintStream[{}] {server<-} out){
-     if (out == null) return;
-     final ArrayList[{server<-}] users = this.users;
-     if (users == null) return;
-     out.println("Found non-null user collection");
-
-     // TODO:: discover who can see results for user 0
-     //
-     CollectionUser[{server<-}]{server<-} user0 = null;
-     try{
-	 user0 = (CollectionUser[{server<-}]) users.get(0);
-     }catch(Exception e){
-	 return;
-     }
-
-     discover(users, user0);
-     
-     out.println("Done discovery");
-
-     // TODO: display queue for 0-th user
-     display(user0,out);
-
-     out.println("All done.");
-   }
-
-    private void display{server<-}(CollectionUser[{server<-}]{server<-} user0,
-				   PrintStream[{}] {server<-} out){
+    private void discoverForUser{server<-}(PrintStream[{}] {server<-} out, int{server<-} index){
+	if (out == null) return;
+	ArrayList[{server<-}] users = this.users;
+	if (users == null) return;
+	out.println("Found non-null user collection");
+	
+	CollectionUser[{server<-}]{server<-} user0 = null;
+	try{
+	    user0 = (CollectionUser[{server<-}]) users.get(index);
+	    users.remove(user0);
+	}catch(Exception e){
+	    return;
+	}
 	if(user0 == null || user0.u==null){
 	    return;
 	}
+	
+	iterateUsers(users, user0);
+	out.println("Done discovery");
+	
 	user0.u.displayQueue(out);
+	out.println("All done.");
     }
 
-
-    //TODO RENAME
-    private void discover{server<-}(ArrayList[{server<-}]{server<-} users,
-				    CollectionUser[{server<-}]{server<-} user0){
-	if(users == null || user0 == null)
+    private void iterateUsers{server<-}(ArrayList[{server<-}]{server<-} users,
+					CollectionUser[{server<-}]{server<-} user0){
+	if(users == null)
 	    return;
-	for(int i=1;i<users.size();i++){
-	    CollectionUser otherUser = null;
+	
+	for(int i=0;i<users.size();i++){
 	    try{
-		otherUser = (CollectionUser[{server<-}]) users.get(i);
-	    }catch(ClassCastException e){
-		return;
+		CollectionUser otherUser = (CollectionUser[{server<-}]) users.get(i);
+		discover(user0,otherUser);
 	    }catch(Exception e){
+		//ClassCastException, NullPointerException, IndexOutOfBoundsException
 		return;
 	    }
-	    if(otherUser==null)
-		return;
-	    disc(user0,otherUser);
 	}
     }
     
-    //TODO RENAME
-    private void disc{server<-}(CollectionUser[{server<-}]{server<-} collection0,
-				CollectionUser[{server<-}]{server<-} otherCollection){
+    private void discover{server<-}(CollectionUser[{server<-}]{server<-} collection0,
+				    CollectionUser[{server<-}]{server<-} otherCollection){
 	if(collection0 == null||otherCollection==null){
 	    return;
 	}
 	
-	final principal{} alicePrin = collection0.p;
-	final User[alicePrin]{server<-} alice = collection0.u;
-	if(alice==null)
-	    return;
-	final Profile[{alicePrin->;alicePrin<-}]{alicePrin<-} aliceProfile = declassify(alice,{server:} to {}).profile;
-	
+	//Find principals
+	final principal{} principal0 = collection0.p;
 	final principal{} otherPrin = otherCollection.p;
-	User[otherPrin]{server<-} otherUser = otherCollection.u;
+
+	//Find users
+	User[principal0]{server<-} user0 = collection0.u;
+	User[otherPrin]{server<-} otherUser = otherCollection.u;	
 	
-	if(otherUser==null){
+	if(otherUser==null || user0==null){
 	    return;
 	}
-	DiscoveryResult[alicePrin]{alicePrin->} result = otherUser.discover(alicePrin,aliceProfile);
+
+	//Discover
+	Profile[{principal0->;principal0<-}]{principal0<-} profile0 = user0.profile;
+	DiscoveryResult[principal0]{principal0->} result = otherUser.discover(principal0,profile0);
 	
-	if(result==null)
-	    return;
-	Profile[{alicePrin->}]{alicePrin->} resprof = result.profile;
-	if(resprof==null)
+	if(result==null || result.profile==null)
 	    return;
 
-	alice.addProfileToBrowsingQueue(resprof);
+	//Add to profile
+	user0.addProfileToBrowsingQueue(result.profile);
     }
 }
