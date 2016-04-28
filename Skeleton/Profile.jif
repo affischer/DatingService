@@ -16,7 +16,7 @@ public class Profile [label L] implements JifObject[L] {
       String{L} result ="Name: "+this.name;
       if(this.yyyy!=0){
 	  int age = 2016-this.yyyy;
-	  result += "\n  Age: "+age;
+	  result += "\n Age: "+age;
       }
       
       return result;

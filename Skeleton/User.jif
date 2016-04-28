@@ -26,17 +26,21 @@ public class User [principal P] authority (P) {
     
     
     void addProfileToBrowsingQueue{P->} (Profile[{P ->}]{P ->} p) {
-        try{
+        if(p==null){
+	    return;
+	}
+	try{
 	    queue.add(p);
 	}catch(Exception e){}
     }
 
-    void displayQueue{} (PrintStream[{}]{} out) where authority(P){	
+    void displayQueue{} (PrintStream[{}]{} out){	
 	if(out==null)
 	    return;
 	out.println("Printing queue");
 	
-	//wonky old method, no touchie
+	//wonky old method, no touchie. 
+	//it works, but displayQueue() needs authority(P)
 	//String{} result = declassify(getRestrictedQueue(),{P->} to {});
 	//out.print(result);
 	
@@ -72,37 +76,36 @@ public class User [principal P] authority (P) {
     private String[]{} getQueue{} () where authority(P){
 	ArrayList[{P->}]{} queue = declassify(this.queue, {P->} to {});
 	String[]{} results = null;
-	int{} si=0;
+	int{} length=0;
 	try{
-	    si = declassify(queue.size(),{P->} to {});
-	    results = new String[si];
+	    length = declassify(queue.size(),{P->} to {});
+	    results = new String[length];
 	}catch(Exception e){
 	    //NullPointerException, Shouldn't happen. 
 	    //The queue is private and intialised at object initialisation 
 	
 	    //NegativeArraySizeException, Never happens.
-	    //si is the size of a list. a size can never be negative
+	    //si is the size of a list. That size can never be negative
 	}
-	for(int i=0;i<si;i++){
+	for(int i=0;i<length;i++){
 	    JifObject[{P->}]{P->} prof = null;
-	    String{P->} r ="";
+	    String{P->} restrictedString ="";
 	    try{
 	      	prof = queue.get(i);
-		r = prof.toString();
+		restrictedString = prof.toString();
 	    }catch(Exception e){
 		//NullPointerException. Never happens.
 		//The only case where results wouldn't be initialised was if 
-		//queue threw a nullpointer, in which case the loop wouln't
-		//have run
+		//queue had already thrown a nullpointer, in which case the
+		//loop wouln't have run
 
 		//IndexOutOfBoundsException. Never happens
 		//Never happens as queue is of size si, 
 		//and the loop's upper bound is i<si
 	    }
-	    String{} res = declassify(r, {P->} to {});
-	    
+
 	    try{
-	    	results[i] = res;
+	    	results[i] = declassify(restrictedString, {P->} to {});	  
 	    }catch(Exception e){
 		//NullPointerException. Never happens.
 		//The only case where results wouldn't be initialised was if 

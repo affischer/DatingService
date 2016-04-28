@@ -11,17 +11,16 @@ public class Server authority (server) {
     final ArrayList[{server<-}]{server<-} users = new ArrayList[{server<-}]();
 
     void setupUsers {server <- }
-    (PrintStream[{}] {server<-} out)
-	where authority (server) {
-	if (out == null) return;
+    (PrintStream[{}] {server<-} out){
+	if (out == null||users==null) return;
 	out.println ("Starting user creation");
      
 	// TODO: placeholder
-	final Principal alice = Alice;
-	final User [Alice] aliceUser = new User();
-	final Profile[{Alice->;Alice<-}]{Alice<-} aliceProfile = new Profile();
+
+        User [Alice] aliceUser = new User();
+	Profile[{Alice->;Alice<-}]{Alice<-} aliceProfile = new Profile();
 	if(server actsfor Alice){
-	    aliceProfile.name ="alice";
+	    aliceProfile.name ="Alice";
 	    aliceProfile.yyyy = 1993;
 	    aliceProfile.likes = new String[0];
 	    aliceProfile.location_x =1;
@@ -35,7 +34,7 @@ public class Server authority (server) {
 	User [Bob] bobUser = new User();
 	Profile[{Bob->;Bob<-}]{Bob<-} bobProfile = new Profile();
 	if(server actsfor Bob){
-	    bobProfile.name ="bob";
+	    bobProfile.name ="Bob";
 	    bobProfile.yyyy = 1992;
 	    bobProfile.likes = new String[0];
 	    bobProfile.location_x =1;
@@ -49,7 +48,7 @@ public class Server authority (server) {
 	User [Chuck] chuckUser = new User();
 	Profile[{Chuck->;Chuck<-}]{Chuck<-} chuckProfile = new Profile();
 	if(server actsfor Chuck){
-	    chuckProfile.name ="chuck";
+	    chuckProfile.name ="Chuck";
 	    chuckProfile.yyyy = 1993;
 	    chuckProfile.likes = new String[0];
 	    chuckProfile.location_x =1;
@@ -63,7 +62,7 @@ public class Server authority (server) {
 	User [Dolores] doloresUser = new User();
 	Profile[{Dolores->;Dolores<-}]{Dolores<-} doloresProfile = new Profile();
 	if(server actsfor Dolores){
-	    doloresProfile.name ="dolores";
+	    doloresProfile.name ="Dolores";
 	    doloresProfile.yyyy = 1993;
 	    doloresProfile.likes = new String[0];
 	    doloresProfile.location_x =1;
@@ -74,19 +73,16 @@ public class Server authority (server) {
 	}
 	JifObject doloresCollection = new CollectionUser(Dolores,doloresUser);
 
-	try{
-	    users.add(aliceCollection);
-	    out.println("Alice added");
-	    users.add(bobCollection);
-	    out.println("Bob added");
-	    users.add(chuckCollection);
-	    out.println("Chuck added");
-	    users.add(doloresCollection);
-	    out.println("Dolores added");
-	}catch(NullPointerException e){
-	    out.println("failure");
-	}
+	users.add(aliceCollection);
+	out.println("Alice added");
+	users.add(bobCollection);
+	out.println("Bob added");
+	users.add(chuckCollection);
+	out.println("Chuck added");
+	users.add(doloresCollection);
+	out.println("Dolores added");
     }
+
 
 
     void exampleDiscoverForUser0 {server <- }(PrintStream[{}] {server<-} out){
@@ -100,53 +96,55 @@ public class Server authority (server) {
 	if (users == null) return;
 	out.println("Found non-null user collection");
 	
-	CollectionUser[{server<-}]{server<-} user0 = null;
+	//Grab user and remove it from users
+	CollectionUser[{server<-}]{server<-} user = null;
 	try{
-	    user0 = (CollectionUser[{server<-}]) users.get(index);
-	    users.remove(user0);
+	    user = (CollectionUser[{server<-}]) users.get(index);
+	    users.remove(user);
 	}catch(Exception e){
+	    //IndexOutOfBounds -> Can happen, just return if it does.
+	    //ClassCast -> Could happen, just return if it does.
 	    return;
 	}
-	if(user0 == null || user0.u==null){
-	    return;
-	}
-	
-	iterateUsers(users, user0);
-	out.println("Done discovery");
-	
-	user0.u.displayQueue(out);
-	out.println("All done.");
-    }
 
-    private void iterateUsers{server<-}(ArrayList[{server<-}]{server<-} users,
-					CollectionUser[{server<-}]{server<-} user0){
-	if(users == null)
+	if(user == null || user.u==null){
 	    return;
+	}
 	
+	//discover users
 	for(int i=0;i<users.size();i++){
 	    try{
-		CollectionUser otherUser = (CollectionUser[{server<-}]) users.get(i);
-		discover(user0,otherUser);
+		CollectionUser otherUser = 
+		    (CollectionUser[{server<-}]) users.get(i);
+		discover(user,otherUser);
 	    }catch(Exception e){
-		//ClassCastException, NullPointerException, IndexOutOfBoundsException
-		return;
+		//ClassCastException -> Could happen, but just continue then
+		//IndexOutOfBoundsException -> never happens
+		continue;
 	    }
 	}
+
+	out.println("Done discovery");
+	
+	user.u.displayQueue(out);
+	out.println("All done.");
     }
     
-    private void discover{server<-}(CollectionUser[{server<-}]{server<-} collection0,
-				    CollectionUser[{server<-}]{server<-} otherCollection){
+    private void discover{server<-}(CollectionUser[{server<-}]{server<-} 
+				    collection0,
+				    CollectionUser[{server<-}]{server<-} 
+				    otherCollection){
 	if(collection0 == null||otherCollection==null){
 	    return;
 	}
-	
+        
 	//Find principals
-	final principal{} principal0 = collection0.p;
-	final principal{} otherPrin = otherCollection.p;
+	final principal principal0 = collection0.p;
+	final principal otherPrin = otherCollection.p;
 
 	//Find users
-	User[principal0]{server<-} user0 = collection0.u;
-	User[otherPrin]{server<-} otherUser = otherCollection.u;	
+	User[principal0] user0 = collection0.u;
+	User[otherPrin] otherUser = otherCollection.u;	
 	
 	if(otherUser==null || user0==null){
 	    return;
